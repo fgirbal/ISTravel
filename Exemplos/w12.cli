@@ -1,0 +1,9 @@
+8
+1 8 6 974 tempo 1 A1 aviao
+2 9 10 1755 tempo 1 B1 64911
+3 2 2 1051 custo 0
+4 4 12 2322 tempo 2 A2 4749 B1 64911
+5 5 4 1557 tempo 0
+6 1 6 792 custo 0
+7 8 8 958 custo 2 A1 autocarro B2 6
+8 7 12 616 custo 0

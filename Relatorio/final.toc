@@ -1,0 +1,37 @@
+\contentsline {section}{\numberline {1}Introdução ao problema}{3}
+\contentsline {section}{\numberline {2}Abordagem escolhida}{3}
+\contentsline {section}{\numberline {3}Arquitetura do programa}{3}
+\contentsline {section}{\numberline {4}Estruturas de Dados e Algoritmos Utilizados}{5}
+\contentsline {subsection}{\numberline {4.1}Estruturas de Dados}{5}
+\contentsline {subsubsection}{\numberline {4.1.1}$link$ - struct $node$}{5}
+\contentsline {subsubsection}{\numberline {4.1.2}$Graph$ - struct $graph$}{5}
+\contentsline {subsubsection}{\numberline {4.1.3}$transporte$}{5}
+\contentsline {subsubsection}{\numberline {4.1.4}$Info$ - struct $info$}{6}
+\contentsline {subsubsection}{\numberline {4.1.5}$Heap$ - struct $\_heap$}{7}
+\contentsline {subsubsection}{\numberline {4.1.6}$Item$}{7}
+\contentsline {subsubsection}{\numberline {4.1.7}$data$ - struct dataHeap}{7}
+\contentsline {subsection}{\numberline {4.2}Algoritmos}{7}
+\contentsline {subsubsection}{\numberline {4.2.1}Ler mapa e armazenar no $Graph$}{7}
+\contentsline {subsubsection}{\numberline {4.2.2}Algoritmo de $Dijkstra$}{9}
+\contentsline {subsubsection}{\numberline {4.2.3}Ler informação cliente e determinar solução}{10}
+\contentsline {subsection}{\numberline {4.3}Subsistemas}{10}
+\contentsline {subsubsection}{\numberline {4.3.1}$GraphList.c$ e $GraphList.h$}{10}
+\contentsline {subsubsection}{\numberline {4.3.2}$funcoes.c$ e $funcoes.h$}{13}
+\contentsline {subsubsection}{\numberline {4.3.3}$heap.c$ e $heap.h$}{14}
+\contentsline {subsubsection}{\numberline {4.3.4}$Item.c$ e $Item.h$}{16}
+\contentsline {section}{\numberline {5}Análise Computacional}{17}
+\contentsline {subsection}{\numberline {5.1}Estruturas}{17}
+\contentsline {subsubsection}{\numberline {5.1.1}$Graph$}{17}
+\contentsline {subsubsection}{\numberline {5.1.2}$Info$}{17}
+\contentsline {subsubsection}{\numberline {5.1.3}$Heap$}{18}
+\contentsline {subsection}{\numberline {5.2}Algoritmos}{18}
+\contentsline {subsubsection}{\numberline {5.2.1}Ler mapa e armazenar no $Graph$}{18}
+\contentsline {subsubsection}{\numberline {5.2.2}$Dijkstra$}{18}
+\contentsline {subsubsection}{\numberline {5.2.3}Ler o ficheiro cliente e escrever a solução}{19}
+\contentsline {section}{\numberline {6}Exemplo de Funcionamento}{19}
+\contentsline {subsection}{\numberline {6.1}Argumentos do main}{19}
+\contentsline {subsection}{\numberline {6.2}Leitura do ficheiro .map e transferência de informação para o grafo}{19}
+\contentsline {subsection}{\numberline {6.3}Leitura do ficheiro .cli e tratamento de informação}{20}
+\contentsline {subsection}{\numberline {6.4}$Dijkstra$}{21}
+\contentsline {subsection}{\numberline {6.5}Impressão recursiva da solução}{22}
+\contentsline {section}{\numberline {7}Bibliografia}{24}

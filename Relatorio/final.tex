@@ -1,0 +1,733 @@
+\documentclass[11pt, oneside]{article}   	% use "amsart" instead of "article" for AMSLaTeX format
+\usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
+\geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
+%\geometry{landscape}                		% Activate for for rotated page geometry
+%\usepackage[parfill]{parskip}    		% Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}				% Use pdf, png, jpg, or epsÂ§ with pdflatex; use eps in DVI mode
+\usepackage[T1]{fontenc}				% Utilizar acentos em português
+\usepackage{amsmath}
+\usepackage{listings} 				% Utilizar código no meio do latex
+\usepackage{color}
+\usepackage{pdfpages}
+\lstset{frame=tb,
+  language=C,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+								% TeX will automatically convert eps --> pdf in pdflatex		
+\usepackage{amssymb}
+
+\begin{document}
+
+\begin{titlepage}
+
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}} % Defines a new command for the horizontal lines, change thickness here
+
+\center % Center everything on the page
+ 
+%----------------------------------------------------------------------------------------
+%	HEADING SECTIONS
+%----------------------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------------------
+%	LOGO SECTION
+%----------------------------------------------------------------------------------------
+
+\includegraphics[height=2.5cm]{logo.png}\\[1cm] % Include a department/university logo - this will require the graphicx package
+
+\textsc{\Large Algoritmos e Estruturas de Dados}\\[0.5cm] % Major heading such as course name
+\textsc{\large MEEC}\\[0.5cm] % Minor heading such as course title
+
+
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\HRule \\[0.4cm]
+{ \huge \bfseries Projeto "ISTravel"}\\[0.4cm] % Title of your document
+\HRule \\[1.5cm]
+ 
+%----------------------------------------------------------------------------------------
+%	AUTHOR SECTION
+%----------------------------------------------------------------------------------------
+
+\begin{minipage}{0.8\textwidth}
+\begin{flushleft} \large
+\emph{Autores:}\\[0.5 cm]
+Ana Beatriz Neto Cerqueira (78209) - \\anabiacerqueira@gmail.com\\
+Francisco Maria Girbal Eiras (79034) - \\francisco.girbal@gmail.com\\
+\end{flushleft}
+\end{minipage}
+~
+\begin{minipage}{0.15\textwidth}
+\begin{flushright} \large
+\emph{Grupo:} \\
+\textbf{42} 
+\end{flushright}
+\end{minipage}
+\\[1.5 cm]
+\begin{minipage}{0.97\textwidth}
+\begin{flushleft} \large
+\emph{Docente:}\\[0.5 cm]
+Luís Manuel Marques Custódio
+\end{flushleft}
+\end{minipage}
+\\[3 cm]
+
+% If you don't want a supervisor, uncomment the two lines below and remove the section above
+%\Large \emph{Author:}\\
+%John \textsc{Smith}\\[3cm] % Your name
+
+%----------------------------------------------------------------------------------------
+%	DATE SECTION
+%----------------------------------------------------------------------------------------
+
+{\large 9 de Dezembro de 2014}\\[3cm] % Date, change the \today to a set date if you want to be precise
+ 
+%----------------------------------------------------------------------------------------
+
+\vfill % Fill the rest of the page with whitespace
+
+\end{titlepage}
+
+\title{}
+\date{}
+
+\maketitle
+\tableofcontents
+
+\clearpage
+\section{Introdução ao problema}
+\hfill Neste projeto foi-nos proposto o desenvolvimento de um programa agente de viagens.
+
+O seu objetivo centra-se em determinar e sugerir a melhor rota e os meios de transporte necessários, de modo a levar um cliente de uma determinada cidade até à cidade desejada, de acordo com critérios e algumas restrições especificadas.
+
+As cidades estão definidas numa rede de percursos predefinida e fornecida ao programa como input (\textbf{ficheiro.map}), sendo também necessário um ficheiro que contenha as informações do cliente (\textbf{ficheiro.cli}). A solução é apresentada, por fim, num outro ficheiro (\textbf{ficheiro.sol}). Cada ligação é definida pelas cidades que liga, pelo meio de transporte considerado (avião, comboio, barco ou autocarro), pela duração da viagem, pelo seu custo e por um conjunto de parâmetros relativos à sua frequência. Por outro lado, o cliente define a cidade de origem e de destino, podendo escolher o critério a minimizar e ainda, no máximo, duas restrições a aplicar ao itinerário calculado.
+
+Para atingir este objetivo, utilizámos uma variedade de estruturas de dados, como $graphs$, $heaps$, entre outras, e algoritmos, tais como o $Dijkstra$. No final, a solução, apesar de não totalmente eficiente, produziu o resultado esperado, cumprindo as expectativas.
+
+\section{Abordagem escolhida}
+
+Inicialmente, o problema foi reduzido à representação do mapa/rede de ligações mediante a utilização de uma estrutura de dados. Devido ao facto do objetivo do programa ser encontrar o caminho mais curto entre duas cidades, a abordagem baseou-se na representação da rede através de um $grafo$, em que cada cidade corresponde a um vértice do mesmo, e cada aresta a uma ligação (no mapa) entre as cidades.
+
+Numa análise mais detalhada dos dados do enunciado, optou-se por escolher a representação do $grafo$ por \textbf{lista de adjacências} devido ao facto de que este seria acedido rapidamente num caso médio, poupando memória significativamente (em oposição a uma matriz de adjacências).
+
+Posteriormente, analisou-se a segunda parte do projeto: leitura dos dados do cliente e obtenção da solução. De forma a poupar memória, os dados dos clientes nunca foram guardados sequencialmente, sendo antes processados de acordo com a ordem de entrada dos mesmos. Para os processar e encontrar a solução foi utilizado o algoritmo de $Dijkstra$, com a variante de utilização de um $acervo$ para representar os vértices adjacentes. No algoritmo verificam-se as restrições de ligações. Após a obtenção do caminho, este é escrito no ficheiro de $output$ através de uma função recursiva, que verifica também a restrição de custo e tempo total.
+
+\section{Arquitetura do programa}
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.85\textwidth]{mainSchematic.pdf}
+\caption{Fluxograma geral do programa em $istravel.c$}
+\label{fig:firstImg}
+\end{figure}
+\clearpage
+
+\section{Estruturas de Dados e Algoritmos Utilizados}
+
+\subsection{Estruturas de Dados}
+
+Para este projeto foram criadas 7 estruturas de dados independentes essenciais para uma solução mais eficiente do problema.
+
+\subsubsection{$link$ - struct $node$}
+
+\begin{lstlisting}[frame=single]
+struct node {
+	int v; 
+	Info* nodeInfo; 
+	link *next;
+};
+\end{lstlisting}
+
+A estrutura $link$ foi criada de modo a possibilitar a implementação de uma \textbf{linked list} necessária, devido à representação do grafo por lista de adjacências. Esta estrutura armazena, portanto, um vértice (o fim da ligação iniciada em cada uma das posições do vector $adj$ de $Graph$ (ver a seguir), uma $Info*$ que contém a informação da aresta e ainda um ponteiro para a próxima, $next$.
+
+\subsubsection{$Graph$  - struct $graph$}
+\begin{lstlisting}[frame=single]
+struct graph{
+	int V; 
+	int E; 
+	link **adj;
+};
+\end{lstlisting}
+
+$Graph$ é uma estrutura que representa um grafo por lista de adjacências. Como tal, é essencial que este tenha um inteiro, $V$, que contém o número de vértices (neste caso cidades) do mapa, outro, $E$, que contenha o número de arestas do grafo e ainda uma tabela de $link*$ que corresponde à lista de vértices adjacentes ao vértice índice (ver figura).
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=1\textwidth]{schematic1.pdf}
+	\caption{Representação esquemática da interligação entre estruturas de dados}
+   	\label{fig:awesome_image}
+\end{figure}
+
+\subsubsection{$transporte$}
+
+\begin{lstlisting}[frame=single]
+typedef enum{aviao, comboio, barco, autocarro} transporte;
+\end{lstlisting}
+
+Uma descrição através de um \textbf{enum} dos vários meios de transporte existentes (a ser utilizada por $Info$).
+
+\subsubsection{$Info$ - struct $info$}
+
+\begin{lstlisting}[frame=single]
+struct info {
+	transporte meio;
+	int duracao; 
+	int custo; 
+	int t1; 
+	int tf; 
+	int p;
+}; 
+\end{lstlisting}
+
+$Info$ constitui uma estrutura de dados que representa a aresta do grafo, contendo vários pesos associados ao percorrê-la. Neste problema especificamente, $Info$ possui um meio de transporte, $meio$, a duração do transporte, o seu custo, o instante da partida do primeiro transporte ($t1$), do último ($tf$) e a periodicidade com que estes ocorrem ($p$).
+
+\subsubsection{$Heap$ - struct $\_heap$}
+
+\begin{lstlisting}[frame=single]
+struct _heap {
+  int (*less) (Item, Item);
+  int n_elements;
+  int size;
+  Item *heapdata;
+};
+\end{lstlisting}
+
+A estrutura de dados $heap$ possui o número de elementos do heap, $n\_elements$, a sua capacidade, $size$, um ponteiro para uma função para comparar dois $Item$ e garantir que se mantém a condição de acervo, $less$, e ainda uma tabela de $Item$, $heapdata$.
+
+\subsubsection{$Item$}
+
+\begin{lstlisting}[frame=single]
+typedef data * Item;
+\end{lstlisting}
+
+Um $Item$ corresponde apenas a um ponteiro para $data$ (ver seguinte). Esta dupla definição existe de forma a que seja mais simples alterar o tipo de dados que o $heap$ armazena sem necessitar de alterar um grande número de ficheiros (e ainda abstração de dados). 
+
+\subsubsection{$data$ - struct dataHeap}
+
+\begin{lstlisting}[frame=single]
+typedef struct dataHeap
+{
+  int vertice;
+  int peso;
+} data;
+\end{lstlisting}
+
+Uma estrutura do tipo $data$, utilizada no $heap$ através de ponteiros, corresponde a um inteiro $vertice$ e outro $peso$, de forma a permitir que a condição de acervo se verifique, comparando os parâmetros $peso$.
+
+\subsection{Algoritmos}
+
+\subsubsection{Ler mapa e armazenar no $Graph$}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{schematic3.pdf}
+\caption{Fluxograma detalhado do algoritmo de processamento do mapa}
+\label{fig:awesome_image}
+\end{figure}
+
+\clearpage
+\subsubsection{Algoritmo de $Dijkstra$}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{dijkstra.pdf}
+\caption{Fluxograma detalhado do algoritmo de Dijkstra}
+\label{fig:awesome_image}
+\end{figure}
+
+\clearpage
+\subsubsection{Ler informação cliente e determinar solução}
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{schematic4.pdf}
+\caption{Fluxograma detalhado do algoritmo de determinação da solução}
+\label{fig:awesome_image}
+\end{figure}
+
+\subsection{Subsistemas}
+
+O programa principal divide-se em 4 subsistemas diferentes, de acordo com os grupos de funções requeridas pelo projeto.
+
+\subsubsection{$GraphList.c$ e $GraphList.h$}
+
+O objetivo deste subsistema é criar e desenvolver a estrutura $Graph$, através da implementação de uma lista, com o objetivo de guardar e tratar da informação relativa às ligações no mapa, constituindo um papel fundamental na determinação da solução pretendida.
+\\[1.5 cm]
+\textbf{Funções relativas à estrutura $Graph$}
+
+\begin{lstlisting}[frame=single]
+Graph * GRAPHinit(int v);
+\end{lstlisting}
+Aloca espaço para um novo grafo e inicializa-o, com o número de vértices passado à função como argumento.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void GRAPHinsertE(Graph * G, int v, int w, Info * toAddInfo);
+\end{lstlisting}
+Insere uma nova aresta no grafo G, que liga os vértices $v$ e $w$, com a informação contida na estrutura $toAddInfo$, do tipo $Info$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void GRAPHdestroy(Graph * G, void (*freeInfo) (Info *));
+\end{lstlisting}
+Função que liberta todas as estruturas $link$ do grafo (cuja informação é libertada pela função $freeInfo$). Liberta ainda o vetor de adjacências e o próprio grafo.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getGraphV(Graph * G);
+\end{lstlisting}
+Devolve o número de vértices de um grafo G, passado como argumento à função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getGraphE(Graph * G);
+\end{lstlisting}
+Devolve o número de arestas de um grafo G, passado como argumento à função.
+\\[0.3 cm]
+
+\textbf{Funções relativas à estrutura $link$}
+
+\begin{lstlisting}[frame=single]
+link *NEW(int v, Info * information, link *next);
+\end{lstlisting}
+Aloca espaço para uma nova estrutura do tipo $link$, atribuindo-lhe o índice do vértice de origem, a sua informação (numa estrutura $information$, do tipo $Info$) e um ponteiro para o $link$ seguinte. A função retorna o ponteiro para a nova estrutura $link$ criada.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+link * getFirstLink(Graph * G, int vertice);
+\end{lstlisting}
+Devolve um ponteiro para o $link$ correspondente ao primeiro vértice adjacente ao vértice passado como argumento para a função, no grafo dado.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+link * getNextLink(link * l);
+\end{lstlisting}
+Devolve um ponteiro para o $link$ seguinte ao $link$ passado como argumento para a função, no grafo dado.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getLinkV(link * l);
+\end{lstlisting}
+Devolve o índice do vértice correspondente ao $link$ passado como argumento à função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+Info * getLinkInfo(link * l);
+\end{lstlisting}
+Devolve um ponteiro para uma estrutura $Info$, que contém a informação correspondente ao $link$ passado à função como argumento.
+\\[0.3 cm]
+
+\textbf{Funções relativas à estrutura $Info$}
+
+\begin{lstlisting}[frame=single]
+Info * initInfo(char * transportName, int duracao, int custo, int t1, int tf, int p);
+\end{lstlisting}
+Aloca espaço para uma nova estrutura $Info$, guardando a informação necessária (argumentos passados à função) nos campos correspondentes e devolve um ponteiro para a nova estrutura criada.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getCusto(Info * information);
+\end{lstlisting}
+Devolve o custo correspondente a uma determinada estrutura do tipo $Info$, $information$, passada como argumento à função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getDuracao(Info * information);
+\end{lstlisting}
+Devolve a duração correspondente a uma determinada estrutura do tipo $Info$, $information$, passada como argumento à função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getMeio(Info * information);
+\end{lstlisting}
+Devolve o índice correspondente ao meio de transporte de uma determinada estrutura do tipo $Info$, $information$, passada como argumento à função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getTempo(Info * information, int tc);
+\end{lstlisting}
+Devolve o tempo de espera + o tempo de duração de $information$, uma estrutura do tipo $Info$, passada como argumento à função. O tempo de espera é calculado com base no inteiro tc (tempo em que o cliente chega à cidade), passado também como argumento à função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getWeight(link * ramo, int criterio, int instante, int A, int z);
+\end{lstlisting}
+Devolve o peso (custo ou tempo) da estrutura $ramo$, do tipo $link$, consoante o critério escolhido e as restrições pedidas. Se o peso não respeitar os limites impostos pelas restrições, devolve infinito.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+char * meioName(Info * information);
+\end{lstlisting}
+Converte o índice do meio de transporte de $information$ para o próprio nome do meio, devolvendo a string correspondente.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void freeInfo(Info * information);
+\end{lstlisting}
+Função que liberta a estrutura $information$, do tipo $Info$.
+\\[0.3 cm]
+
+\subsubsection{$funcoes.c$ e $funcoes.h$}
+
+Neste módulo estão descritas funções auxiliares, que lidam com ficheiros, erros, entre outras. O objetivo deste subsistema é ser a base das funções necessárias para a execução das tarefas básicas do programa.
+\\[1 cm]
+\textbf{Funções tratamento de dados}
+
+\begin{lstlisting}[frame=single]
+FILE * openFile(char * filename, char * mode);
+\end{lstlisting}
+Abre um ficheiro e devolve um ponteiro para o mesmo.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+Graph * openMapfile(char* filename);
+\end{lstlisting}
+Recebe o nome do ficheiro, abre-o e lê a informação da rede de ligações, guardando-a num grafo, que é devolvido pela função.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void solveClient(char* clientFile, char* ouputFile, Graph * g);
+\end{lstlisting}
+Função que abre o ficheiro de cliente $clientFile$ e gera o resultado de acordo com o mapa passado em $g$, escrevendo-o em $outputFile$, recorrendo à função $dijkstra$, de $heap$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void PrintSol(FILE * f, int c, int wt[], int st[], Info * it[], int * sumCusto, int resMax);
+\end{lstlisting}
+Imprime a solução dada por $st[]$, de acordo com a restrição de custo implicada ($resMax$).
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void SumTempo(int c, int wt[], int st[], Info * it[], int * sumTempo);
+\end{lstlisting}
+Calcula, recursivamente, a soma do tempo para o caminho dado por $st[]$.
+\\[0.5 cm]
+\textbf{Função de erro}
+\begin{lstlisting}[frame=single]
+void error(char * message);
+\end{lstlisting}
+Imprime uma mensagem de erro dada por $message$ e sai do programa com o código 2.
+
+\subsubsection{$heap.c$ e $heap.h$}
+
+As funções descritas neste módulo relacionam-se com a implementação de uma estrutura de dados do tipo $heap$, utilizada no algoritmo $dijkstra$, também incluído neste ficheiro devido à interligação entre ambas.
+\\[0.8 cm]
+\textbf{Funções Alocação/Libertação do $heap$}
+
+\begin{lstlisting}[frame=single]
+Heap *NewHeap(int size, int (*less) (Item, Item));
+\end{lstlisting}
+Aloca um $heap$ de tamanho $size$, cuja função de comparação entre dois $Item$ é $less$, devolvendo o ponteiro para o mesmo.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void CleanHeap(Heap * h);
+\end{lstlisting}
+Liberta os valores do $heap$, libertando todos os $Item$ alojados, não libertando a estrutura $h$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void FreeHeap(Heap *h);
+\end{lstlisting}
+Chama a função $CleanHeap(h)$ e liberta a estrutura de dados $h$.
+\\[0.5 cm]
+\textbf{Função de operação num $heap$}
+\begin{lstlisting}[frame=single]
+void FixUp(Heap * h, int k, int pos[]);
+\end{lstlisting}
+Realiza um $FixUp$ a um vértice de $h$, especificado por $k$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void FixDown(Heap * h, int k, int pos[]);
+\end{lstlisting}
+Realiza um $FixDown$ a um vértice de $h$, especificado por $k$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int Direct_Insert(Heap * h, Item element);
+\end{lstlisting}
+Insere $element$ em $h$, não realizando $FixUp$ posteriormente.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+Item RemoveMax(Heap * h, int pos[]);
+\end{lstlisting}
+Remove de $h$ o $Item$ com maior prioridade, devolvendo-o (não liberta);
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int IsHeapEmpty(Heap * h);
+\end{lstlisting}
+Devolve 1 se $h$ estiver vazio, 0 caso contrário.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void changePriority(Heap * h, int pos, int priority, int positions[]);
+\end{lstlisting}
+Modifica a prioridade de um elemento de $h$, na posição $pos$, mudando-a para $priority$.
+\\[0.5 cm]
+\textbf{Algoritmo de $Dijkstra$}
+
+\begin{lstlisting}[frame=single]
+void dijkstra(Graph *G, Heap *h, int s, int st[], int wt[], int pos[], Info * it[], int tc, int criterio, int A, int z);
+\end{lstlisting}
+Aplica o algoritmo de $dijkstra$ a $G$, tendo como origem $s$, guardando os vértices anteriores (caminho) em $st[]$, os pesos em $wt[]$ e as $Info$ respetivas em $it[]$.
+\\[0.3 cm]
+
+\subsubsection{$Item.c$ e $Item.h$}
+
+As funções descritas neste módulo relacionam-se com a utilização de uma estrutura abstracta, definida com um $Item$, de forma a manter ao máximo a abstração da implementação do $heap$.
+\\[0.5 cm]
+\textbf{Funções Alocação/Libertação de $Item$}
+
+\begin{lstlisting}[frame=single]
+Item newItem(int vertice, int peso);
+\end{lstlisting}
+Aloca um $Item$, dando-lhe como parâmetros $vertice$ e $peso$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+void freeItem(Item e);
+\end{lstlisting}
+Liberta um $Item$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getVertice(Item e);
+\end{lstlisting}
+Retorna o vértice de $e$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int getItemWeight(Item e);
+\end{lstlisting}
+Retorna o peso de $e$.
+\\[0.3 cm]
+
+\begin{lstlisting}[frame=single]
+int LessNum(Item a, Item b);
+\end{lstlisting}
+Função que devolve 1 se $a$ for maior do que $b$; 0 caso contrário.
+\\[0.5 cm]
+
+\section{Análise Computacional}
+
+Antes de conseguir realizar a análise temporal e em termos de memória de partes do projeto, é necessário apresentar as tabelas temporais e de memória das várias estruturas utilizadas nas várias partes.
+
+\subsection{Estruturas}
+\subsubsection{$Graph$}
+\begin{center}
+\begin{tabular}{l*{6}r}
+Processo              & Custo Temporal & Custo Memória\\
+\hline
+Criação do grafo & O(V) & O(V)\\
+Libertação do grafo & O(E) & -\\
+Adicionar aresta ao grafo & O(1) & O(1)\\
+Acesso à lista de adjacentes & O(1) & -\\
+Acesso ao próximo adjacente & O(1) & -\\[0.3 cm]
+\end{tabular}
+\\
+\textbf{Tabela 1.} \em{Custo temporal e de memória na implementação do $Graph$}
+\end{center}
+
+Onde $V$ corresponde ao número de vértices do grafo e $E$ o número de arestas do grafo.
+
+\subsubsection{$Info$}
+\begin{center}
+\begin{tabular}{l*{6}r}
+Processo              & Custo Temporal & Custo Memória\\
+\hline
+Criação da estrutura & O(1) & O(1)\\
+Libertação da estrutura & O(1) & -\\
+Obter campo da estrutura & O(1) & -\\[0.3 cm]
+\end{tabular}
+\\
+\textbf{Tabela 2.} \em{Custo temporal e de memória na implementação do $Info$}
+\end{center}
+
+\subsubsection{$Heap$}
+\begin{center}
+\begin{tabular}{l*{6}r}
+Processo              & Custo Temporal & Custo Memória\\
+\hline
+Criação do heap & O(1) & O(N)\\
+Libertação do heap & O(N) & -\\
+Inserir no final do heap & O(1) & O(1)\\
+Remover máximo & O($log(n)$) & -\\
+Alterar prioridade de um vértice$^1$ & O($log(n)$) & - \\
+Verificar se o heap está vazio & O(1) & -\\[0.3 cm]
+\end{tabular}
+\\
+\textbf{Tabela 3.} \em{Custo temporal e de memória na implementação do $Heap$}
+\end{center}
+
+Onde $N$ corresponde à capacidade do $heap$, e $n$ corresponde ao número de elementos\footnote{Custos calculados considerando que é conhecida a posição do vértice no $heap$}.
+
+\subsection{Algoritmos}
+\subsubsection{Ler mapa e armazenar no $Graph$}
+
+Na função \textbf{openMapfile()} abre-se um ficheiro, uma operação O(1) por natureza, cria-se um $Graph$, uma operação O(V), e preenche-se com a informação lida.
+
+A ação de preencher o $Graph$ corresponde a inserir, sucessivamente, na estrutura as várias arestas dadas pelo ficheiro de entrada. Ora, como foi visto anteriormente (ver 6.1.1 e 6.1.2), alocar uma aresta e adicioná-a a um $Graph$ corresponde a uma operação O(1). Dado que se inserem $E$ arestas ao grafo, a complexidade total temporal e de memória é \textbf{O(E)} ou \textbf{O(V)}, de acordo com a relação entre o número de arestas e vértices.
+
+\subsubsection{$Dijkstra$}
+
+O algoritmo $Dijkstra$ implementado constitui uma variante do leccionado nas aulas, já que utiliza uma estrutura do tipo $heap$ associado a um \textbf{vetor de posições}, $pos[]$, que guarda a posição dos vértices no $heap$. Esta associação de fatores faz com que a alteração da prioridade de um vértice adjacente deixe de ser uma operação O(N), passando a ser \textbf{O($\textbf{log(N)}$)}.
+
+No entanto, o algoritmo é constituído por um conjunto de passos sequenciais que influenciam a sua complexidade. Primeiramente, ocorre a inicialização de estruturas e vetores (posição, pesos, entre outros), uma operação O(V), tanto em termos temporais como de memória. 
+
+Seguidamente vem a alteração da prioridade da origem, uma operação temporal O(log(V)).
+
+Por fim, entramos no ciclo para determinar os vértices adjacentes ao máximo (neste caso, com o peso mínimo). Todas as funções dentro desta secção, à excepção do \textbf{changePriority()}, correspondem a funções cuja complexidade temporal é O(1). No pior caso, todos os vértices são adjacentes uns aos outros, e a ordem pelo qual é percorrido o caminho implica que o valor do peso dos mesmos seja atualizado a cada iteração do $while$ exterior. Neste caso, a complexidade temporal do $Dijkstra$ é \textbf{O(E*log(V))}.
+
+Em termos de memória, o algortimo de $Dijkstra$ implementado requer apenas $V$ $Itens$, o que corresponde a \textbf{O(V)}.
+
+\subsubsection{Ler o ficheiro cliente e escrever a solução}
+
+Todas as operações necessárias para esta operação encontram-se na função \textbf{solveClient()}. A leitura de uma linha do ficheiro corresponde a um processo O(1) temporalmente, sendo que, seguidamente, é aplicado o algoritmo de $Dijkstra$, cuja complexidade é O(E*log(V)), sendo finalmente impresso recursivamente o caminho solução, uma operação cuja ordem de grandeza é O(V) (no pior dos casos, o caminho passa por todos os vértices). Devido ao facto de todas estas operações serem sequenciais, e definindo $C$ como a complexidade final, obtem-se:
+
+\begin{equation}
+C = n_c \cdot (O(1) + O(E\cdot log(V)) + O(V)) = n_c \cdot (O(E \cdot log(V)) + O(V))
+\end{equation}
+
+Em que $n_c$ corresponde ao número de clientes. A complexidade final temporal será definida de acordo com a relação entre $E$ e $V$, podendo ser \textbf{O(E *log(V))} ou \textbf{O(V)}.
+
+Em termos de memória, a leitura do ficheiro requer 4 tabelas de tamanho $V$ mais um $heap$, pelo que a complexidade final é \textbf{O(V)}.
+
+\section{Exemplo de Funcionamento}
+
+Como exemplo ilustrativo do funcionamento do nosso programa, recorremos, em seguida, ao caso particular $enunciado$, com ficheiros de entrada \textbf{enunciado.map} e \textbf{enunciado.cli}.\\
+
+\subsection{Argumentos do main}
+
+Para correr o programa, é necessário passar como argumentos do main ambos os ficheiros para leitura, neste caso, \textbf{enunciado.map} e \textbf{enunciado.cli}.
+
+Na linha de comandos deve aparecer:
+
+\begin{lstlisting}[frame=single]
+$./istravel [path]/enunciado.map [path]/enunciado.cli
+\end{lstlisting}
+
+\subsection{Leitura do ficheiro .map e transferência de informação para o grafo}
+
+É utilizada a função \textbf{openMapfile}, para ler o ficheiro de entrada que contem o mapa com as ligações possíveis e guardar a sua informação num grafo.
+
+O ficheiro \textbf{enunciado.map} contém a seguinte informação:
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{mapa1}
+\caption{Informação e formato do ficheiro enunciado.map}
+\label{fig:awesome_image}
+\end{figure}
+
+Em seguida, é inicializado o grafo, criando uma estrutura do tipo $Graph$, recorrendo à função \textbf{GRAPHinit}.
+
+Agora, é inicializada uma outra estrutura do tipo $Info$, com a função  \textbf{initInfo}, onde são armazenadas as informações de cada ligação da rede.
+
+Depois, é inserida a respetiva informação no grafo, aplicando a função \textbf{GRAPHinsertE}, que insere, primeiro, uma aresta no grafo por cada ligação lida do ficheiro de entrada e cria, depois, uma estrutura do tipo $link$, onde são guardados os dados da ligação considerada.
+
+Quando é lida a primeira linha do ficheiro, por exemplo, é inserida no grafo uma aresta que liga os vértices 4 e 3. Na realidade, estes vértices têm o valor de 3 e 2, devido a um $shift$ necessário, de modo a evitar a alocação de uma posição de memória adicional (cidades no mapa numeradas de 1 a V). A essa aresta é associado um $link$ que contém o vértice de origem, um ponteiro para a estrutura $Info$ com a informação e um ponteiro para a ligação seguinte.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth]{schematic2.pdf}
+\caption{Representação do grafo para o ficheiro enunciado.map}
+\label{fig:awesome_image}
+\end{figure}
+
+Após a alocação do $Graph$ (figura 7), é fechado o ficheiro \textbf{enunciado.map}.
+
+\subsection{Leitura do ficheiro .cli e tratamento de informação}
+
+É chamada a função $solveClient$, onde começa por ser lido o ficheiro \textbf{enunciado.cli}, recorrendo a um $fscanf$ de todos os campos do mesmo, guardando-os em variáveis.
+
+É feita uma análise do número de restrições requeridas pelo cliente, através de um $switch$. Aqui é logo guardado o tipo de restrições, em uma ou duas variáveis (consoante o número), no caso de estas existirem. 
+
+No caso do primeiro cliente, aparece:
+
+\begin{lstlisting}[frame=single]
+1 1 4 0 tempo 1 A1 aviao
+\end{lstlisting}
+
+, o que mostra que o critério a minimizar é o tempo e que existe uma restrição, cujo objetivo é a exclusão do avião como transporte em qualquer das ligações.\\
+
+\subsection{$Dijkstra$}
+
+Aqui recorre-se à estrutura $Graph$, com o objetivo de encontrar o caminho mais curto entre dois vértices do grafo.
+
+Para o caso do primeiro cliente, por exemplo, procura-se uma ligação entre os vértices 1 e 4, com o menor tempo possível (o critério a minimizar é o tempo), sem a utilização do avião em nenhuma das viagens.
+
+Depois de inicializar o vetor de posições a -1, o vetor de peso a infinito e inserir todos os vértices no $heap$, altera-se a prioridade do vértice 1 para 0 (dado que este é a origem e o cliente está disponível a partir do instante 0).
+
+Em seguida, retira-se do $heap$ a origem (por ter prioridade máxima) e inicia-se a procura dos seus adjacentes. Para todos os adjacentes ao vértice 1, neste caso, 7 (comboio), 7 (avião), 4 (autocarro), 4 (barco), 4(avião) e 4 (comboio), tenta-se atualizar o peso da ligação. Todos, exceto o 7 (avião) e o 4(avião) vêm o seu peso reduzido, obtendo-se o seguinte $heap$: (considerando a contagem dos vértices a 0)
+
+\begin{lstlisting}[frame=single]
+v: 3  w: 90  (autocarro)
+v: 11  w: INT_MAX  (NULL)
+v: 6  w: 1111  (comboio)
+v: 1  w: INT_MAX  (NULL)
+v: 4  w: INT_MAX  (NULL)
+v: 5  w: INT_MAX  (NULL)
+v: 2  w: INT_MAX  (NULL)
+v: 7  w: INT_MAX  (NULL)
+v: 8  w: INT_MAX  (NULL)
+v: 9  w: INT_MAX  (NULL)
+v: 10  w: INT_MAX  (NULL)
+\end{lstlisting}
+
+Retira-se, depois, o vértice 4 (3, no $heap$) e repete-se o mesmo processo para os adjacentes.
+
+Finalmente, limpa-se o $heap$, chamando a função \textbf{CleanHeap}.\\
+
+\subsection{Impressão recursiva da solução}
+
+Neste momento, o caminho final já está guardado, embora na ordem inversa, no vetor $st[]$, estando as informações das arestas no vetor $it[]$.
+
+Em primeiro lugar, é chamada a função $SumTempo$, que calcula o tempo total do itinerário calculado, com base nos vetores $st[]$ e $it[]$, devolvidos do algoritmo $Dijkstra$.
+
+Em seguida, é chamada a função $PrintSol$, onde é calculado o custo total da rota e é impressa recursivamente a solução obtida, no ficheiro de saída, para cada cliente.
+
+Obtém-se, neste caso, o ficheiro \textbf{enunciado.sol}, com a seguinte forma:
+
+\begin{lstlisting}[frame=single]
+1 1 autocarro 4  90 15
+2 2 aviao 6  barco 5  autocarro 1  comboio 4  autocarro 3  1020 47
+3  -1
+4 9 autocarro 10  5 2
+5 5 autocarro 1  autocarro 4  comboio 8  comboio 9  853 94
+6 2 aviao 6  barco 5  autocarro 1  aviao 4  autocarro 3  1860 63
+7  -1
+8 1 comboio 4  600 14
+9 -1
+\end{lstlisting}
+
+\clearpage
+\section{Bibliografia}
+\begin{enumerate}
+\item "University Assignment." \emph{LaTeX Templates}. N.p., n.d. Web. 21 Nov. 2014. \\<http://www.latextemplates.com/template/university-assignment-title-page>
+\item Damas, Luis. \emph{Linguagem C}. Lisboa: FCA - Editora Informática, 1999.
+\item Sedgewick, Robert. \emph{Algorithms in C}. 3rd ed. Boston, Mass.: Addison Wesley, 1998.
+\end{enumerate}
+
+
+\end{document}  
+
+
+
+
+
