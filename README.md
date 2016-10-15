@@ -9,4 +9,4 @@ Travel salesman problem implemented in C (using abstract data structures)
 From a terminal execute:
 ```bash
 $./istravel [path]/enunciado.map [path]/enunciado.cli
-´´´
+```
